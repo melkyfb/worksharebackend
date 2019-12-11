@@ -6,6 +6,8 @@ import javax.persistence.*
 data class Role(
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     var id: Long?,
+
+    @Column(unique=true)
     var role: String,
     var description: String?,
 

@@ -33,14 +33,27 @@ class WorkshareBackendApplication(
             ),
             arrayListOf(adminRole, userRole)
         )
+        includeUserIfNotExists(
+            User(
+                null,
+                "User",
+                "User",
+                "user",
+                passwordEncoder().encode("user"),
+                null
+            ),
+            arrayListOf(userRole)
+        )
     }
 
-    fun includeUserIfNotExists(user: User, roles: ArrayList<Role>): User{
+    fun includeUserIfNotExists(user: User, roles: ArrayList<Role>? = null): User{
         var userDB = userRepository.findByUsername(user.username)
         if(userDB == null){
             userDB = userRepository.save(user)
         }
-        userDB.roles = roles
+        if(!roles.isNullOrEmpty()){
+            userDB.roles = roles
+        }
         return userRepository.save(userDB)
     }
 
